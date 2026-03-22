@@ -1,28 +1,29 @@
-import React , {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config.service"
 import { Container, PostCard } from "../components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function Home(){
+function Home() {
 
     const [posts, setPosts] = useState([])
-    const authStatus = useSelector(state => state.auth.status) 
-     useEffect(()=>{
-        if(authStatus){  // ← only fetch if logged in
-            appwriteService.getPosts().then((posts)=>{
-                if(posts){
+    const userData = useSelector(state => state.auth.userData)
+    const authStatus = useSelector(state => state.auth.status)
+    useEffect(() => {
+        if (authStatus) {  // ← only fetch if logged in
+            appwriteService.getPosts().then((posts) => {
+                if (posts) {
                     setPosts(posts.documents)
                 }
             })
         } else {
             setPosts([])  // ← clear posts when logged out
         }
-    },[authStatus])
+    }, [authStatus])
 
-    if(posts.length === 0){
+    if (posts.length === 0) {
         return (
-           <div className="w-full">
+            <div className="w-full">
                 {/* Hero Section */}
                 <div className="w-full bg-blue-50 py-20">
                     <Container>
@@ -40,44 +41,50 @@ function Home(){
         )
     }
 
-    return(
+    return (
         <div className="w-full">
             {/* Hero Section */}
-           <div className="w-full bg-blue-50 py-16">
-    <Container>
-        <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-2">
-                <h1 className="text-4xl font-bold text-gray-800">
-                    Welcome back, {userData?.name}! 👋
-                </h1>
-                <p className="text-gray-500">
-                    {posts.length} {posts.length === 1 ? 'post' : 'posts'} in the community
-                </p>
+            <div className="w-full bg-blue-50 py-16">
+                <Container>
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-2">
+                            <h1 className="text-4xl font-bold text-gray-800">
+                                Welcome back, {userData?.name}! 👋
+                            </h1>
+                            <p className="text-gray-500">
+                                {posts.length} {posts.length === 1 ? 'post' : 'posts'} in the community
+                            </p>
+                        </div>
+                        <Link
+                            to="/add-post"
+                            className="px-8 py-3 bg-gray-800 text-white rounded-full hover:bg-gray-900 duration-200 font-medium"
+                        >
+                            + Add Post
+                        </Link>
+                    </div>
+                </Container>
             </div>
-            <Link 
-                to="/add-post" 
-                className="px-8 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 duration-200 font-medium"
-            >
-                + Add Post
-            </Link>
-        </div>
-        </Container>
-     </div>
 
             {/* Posts Grid */}
             <div className="w-full py-8">
                 <Container>
-                    <div className="flex flex-wrap">
-                        {posts.map((post)=>(
-                            <div key={post.$id} className="p-2 w-1/4">
-                                <PostCard {...post}/>
+                    <div style={{
+                        columnCount: 4,
+                        columnGap: '1rem',
+                    }}>
+                        {posts.map((post) => (
+                            <div key={post.$id} style={{
+                                breakInside: 'avoid',
+                                marginBottom: '1rem',
+                            }}>
+                                <PostCard {...post} />
                             </div>
                         ))}
                     </div>
                 </Container>
             </div>
         </div>
-    
+
     )
 
 
