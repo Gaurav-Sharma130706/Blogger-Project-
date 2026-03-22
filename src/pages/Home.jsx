@@ -1,17 +1,23 @@
 import React , {useEffect, useState} from "react";
 import appwriteService from "../appwrite/config.service"
 import { Container, PostCard } from "../components";
+import { useSelector } from "react-redux";
 
 function Home(){
 
     const [posts, setPosts] = useState([])
-    useEffect(()=>{
-        appwriteService.getPosts().then((posts)=>{
-            if(posts){
-                setPosts(posts.documents)
-            }
-        })
-    },[])
+    const authStatus = useSelector(state => state.auth.status) 
+     useEffect(()=>{
+        if(authStatus){  // ← only fetch if logged in
+            appwriteService.getPosts().then((posts)=>{
+                if(posts){
+                    setPosts(posts.documents)
+                }
+            })
+        } else {
+            setPosts([])  // ← clear posts when logged out
+        }
+    },[authStatus])
 
     if(posts.length === 0){
         return (
