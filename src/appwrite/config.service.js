@@ -96,18 +96,35 @@ export class Service{
 
     //file upload services  (should be created in seprate service file but for now we are ignoring it)
 
+    // async uploadFile(file){
+    //     try {
+    //         return await this.bucket.createFile(
+    //             config.appwriteBucketID,
+    //             ID.unique(),
+    //             file
+    //         )
+    //     } catch (error) {
+    //         console.error(error)
+    //         return false
+    //     }
+    // }
+
     async uploadFile(file){
-        try {
-            return await this.bucket.createFile(
-                config.appwriteBucketID,
-                ID.unique(),
-                file
-            )
-        } catch (error) {
-            console.error(error)
-            return false
-        }
+    console.log("Bucket ID:", config.appwriteBucketID)
+    console.log("File:", file)
+    try {
+        return await this.bucket.createFile(
+            config.appwriteBucketID,
+            ID.unique(),
+            file
+        )
+    } catch (error) {
+        console.error("Upload error code:", error.code)
+        console.error("Upload error message:", error.message)
+        console.error("Upload error type:", error.type)
+        return false
     }
+}
 
     async deleteFile(fileID){
         try {
