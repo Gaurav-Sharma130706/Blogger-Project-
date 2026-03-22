@@ -19,6 +19,8 @@ function PostForm({post}){   //watch provides you ability to continiusly watch a
     const userData= useSelector(state=> state.auth.userData)
 
     const submit= async(data) =>{
+         console.log("userData:", userData)
+    console.log("userData.$id:", userData?.$id)
         
         try {
             if(post){   //Matlab user koi already existing post mai changes kar raha hai
