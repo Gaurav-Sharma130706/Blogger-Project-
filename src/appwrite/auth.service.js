@@ -43,14 +43,13 @@ export class AuthService{
     }
 
     async getCurrentUser(){
-        try {
-            return await this.account.get();
-        } catch (error) {
-            throw error;
-        }
-
-        return null;
+    try {
+        return await this.account.get();
+    } catch (error) {
+        console.log("No active session:", error.message)
+        return null;  // ← return null instead of throwing
     }
+}
 
     async logout(){
          
