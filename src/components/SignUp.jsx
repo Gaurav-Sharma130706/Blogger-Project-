@@ -10,7 +10,7 @@ function SignUp(){
     const navigate= useNavigate()
     const [error, setError] = useState("")
     const dispatch = useDispatch()
-    const {register, handleSubmit}= useForm()
+    const {register, handleSubmit,  formState:{errors}}= useForm()
 
     const signUp= async(data)=>{
         setError("")
@@ -83,6 +83,7 @@ function SignUp(){
                             "password should have At least 8 characters, At least 1 lowercase letter, At least 1 uppercase letter ,At least 1 digit, At least 1 special character"
                             }
                         })} />
+                        {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
 
                         <Button type= "submit" className="w-full"> Create Account</Button>
 
